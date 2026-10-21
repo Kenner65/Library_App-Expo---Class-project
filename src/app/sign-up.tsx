@@ -4,7 +4,7 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  type TextInputInstance,
+  TextInput,
 } from 'react-native';
 import { Button } from '@/components/button';
 import { Screen } from '@/components/screen';
@@ -25,8 +25,8 @@ export default function SignUpScreen() {
   const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const emailRef = useRef<TextInputInstance>(null);
-  const passwordRef = useRef<TextInputInstance>(null);
+  const emailRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
 
   async function submit() {
     const found = validateCredentials({ name, email, password }, 'signUp');

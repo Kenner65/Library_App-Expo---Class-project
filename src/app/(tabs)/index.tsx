@@ -1,27 +1,27 @@
-import { useDeferredValue, useState } from 'react';
+import { BookCard } from "@/components/book-views";
+import { ConnectionBanner } from "@/components/connection-banner";
+import { Screen } from "@/components/screen";
+import { EmptyView, ErrorView, LoadingView } from "@/components/state-views";
+import { ThemedText } from "@/components/themed-text";
+import { BottomTabInset, Spacing } from "@/constants/theme";
+import { useBooks, useCategories } from "@/hooks/use-library-data";
+import { useTheme } from "@/hooks/use-theme";
+import { useData } from "@/providers/data-provider";
+import { useDeferredValue, useState } from "react";
 import {
-  FlatList,
-  Pressable,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
-import { BookCard } from '@/components/book-views';
-import { ConnectionBanner } from '@/components/connection-banner';
-import { Screen } from '@/components/screen';
-import { EmptyView, ErrorView, LoadingView } from '@/components/state-views';
-import { ThemedText } from '@/components/themed-text';
-import { BottomTabInset, Spacing } from '@/constants/theme';
-import { useBooks, useCategories } from '@/hooks/use-library-data';
-import { useTheme } from '@/hooks/use-theme';
-import { useData } from '@/providers/data-provider';
+    FlatList,
+    Pressable,
+    RefreshControl,
+    ScrollView,
+    StyleSheet,
+    TextInput,
+    View,
+} from "react-native";
 
 export default function BooksScreen() {
   const theme = useTheme();
   const { syncNow, syncing, lastError } = useData();
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string | null>(null);
   const q = useDeferredValue(search);
   const { books, status } = useBooks({ q, category });
@@ -56,27 +56,32 @@ export default function BooksScreen() {
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.chips}>
+            contentContainerStyle={styles.chips}
+          >
             {[null, ...categories].map((c) => {
               const selected = c === category;
               return (
                 <Pressable
-                  key={c ?? 'all'}
+                  key={c ?? "all"}
                   onPress={() => setCategory(c)}
                   accessibilityRole="button"
                   accessibilityState={{ selected }}
-                  accessibilityLabel={c ? `Categoría ${c}` : 'Todas las categorías'}
+                  accessibilityLabel={
+                    c ? `Categoría ${c}` : "Todas las categorías"
+                  }
                   style={[
                     styles.chip,
                     {
                       borderColor: selected ? theme.primary : theme.border,
-                      backgroundColor: selected ? theme.primary : 'transparent',
+                      backgroundColor: selected ? theme.primary : "transparent",
                     },
-                  ]}>
+                  ]}
+                >
                   <ThemedText
                     type="smallBold"
-                    style={{ color: selected ? theme.onPrimary : theme.text }}>
-                    {c ?? 'Todas'}
+                    style={{ color: selected ? theme.onPrimary : theme.text }}
+                  >
+                    {c ?? "Todas"}
                   </ThemedText>
                 </Pressable>
               );
@@ -89,7 +94,10 @@ export default function BooksScreen() {
         keyExtractor={(b) => b.id}
         renderItem={({ item }) => <BookCard book={item} />}
         ItemSeparatorComponent={() => <View style={{ height: Spacing.two }} />}
-        contentContainerStyle={[styles.list, { paddingBottom: BottomTabInset + Spacing.four }]}
+        contentContainerStyle={[
+          styles.list,
+          { paddingBottom: BottomTabInset + Spacing.four },
+        ]}
         keyboardShouldPersistTaps="handled"
         refreshControl={
           <RefreshControl
@@ -98,17 +106,20 @@ export default function BooksScreen() {
           />
         }
         ListEmptyComponent={
-          status === 'loading' ? (
+          status === "loading" ? (
             <LoadingView message="Cargando catálogo…" />
-          ) : status === 'error' ? (
-            <ErrorView message={lastError ?? 'Error desconocido'} onRetry={() => void syncNow()} />
+          ) : status === "error" ? (
+            <ErrorView
+              message={lastError ?? "Error desconocido"}
+              onRetry={() => void syncNow()}
+            />
           ) : (
             <EmptyView
-              title={filtering ? 'Sin resultados' : 'El catálogo está vacío'}
+              title={filtering ? "Sin resultados" : "El catálogo está vacío"}
               message={
                 filtering
-                  ? 'Prueba con otro título, autor o categoría.'
-                  : 'Aún no hay libros registrados.'
+                  ? "Prueba con otro título, autor o categoría."
+                  : "Aún no hay libros registrados."
               }
             />
           )
@@ -119,7 +130,11 @@ export default function BooksScreen() {
 }
 
 const styles = StyleSheet.create({
-  header: { gap: Spacing.two, paddingTop: Spacing.two, paddingBottom: Spacing.two },
+  header: {
+    gap: Spacing.two,
+    paddingTop: Spacing.two,
+    paddingBottom: Spacing.two,
+  },
   search: {
     minHeight: 48,
     borderWidth: 1,
@@ -133,7 +148,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.three,
     borderRadius: 18,
     borderWidth: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   list: { flexGrow: 1 },
 });

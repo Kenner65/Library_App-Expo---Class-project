@@ -3,7 +3,6 @@ import {
   StyleSheet,
   TextInput,
   View,
-  type TextInputInstance,
   type TextInputProps,
 } from 'react-native';
 import { Spacing } from '@/constants/theme';
@@ -13,7 +12,7 @@ import { ThemedText } from './themed-text';
 interface TextFieldProps extends TextInputProps {
   label: string;
   error?: string;
-  ref?: Ref<TextInputInstance>;
+  ref?: Ref<TextInput>;
 }
 
 export function TextField({ label, error, style, ref, ...rest }: TextFieldProps) {
